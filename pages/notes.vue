@@ -8,9 +8,6 @@ const posts = Object.assign({}, ...await Promise.all(projectList.map(async (item
 
 <template>
   <div>
-    <h1 class="text-title mb-2em font-bold text-center">
-      Notes
-    </h1>
     <article v-for="(series, index) in projectList" :key="index" slide-enter :style="{ '--stagger': index + 1 }">
       <div class="text-center mt-2em mb-1em text-gray-700:60" font-bold text-lg>
         {{ series.name }}

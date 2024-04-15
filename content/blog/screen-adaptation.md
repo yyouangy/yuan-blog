@@ -2,7 +2,7 @@
 date: 2023-06-02 17:55:07
 url: 
 aliases: 
-title: 屏幕适配
+title: 浅析屏幕适配
 ---
 ## 媒体查询
 
@@ -21,7 +21,6 @@ title: 屏幕适配
 * 方式二： **通过link引入** ：`<link ref="stylesheet" ref="bgc.css" media="(max-width:800px)">`
 * 方式三： 使用media属性为 `<style>`，`<link>`，`<source>`和其他HTML元素指定特定的媒体类型【 **常用** 】
   * 语法：`@media (语法){}`【eg：`@media (max-width:800px){body:{background-color:red;}`】
-
 
 **其中我们最常见的就是 @media：**
 

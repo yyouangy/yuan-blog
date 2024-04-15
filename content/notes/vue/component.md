@@ -1,5 +1,5 @@
 ---
-date: 2023-06-02 17:55:07
+date: 2023-11-02
 url: 
 aliases:
 title: 探索组件本质
@@ -184,7 +184,9 @@ function mountEl(vnode, container) {
 function mountComponent(vnode, container) {
 //创建组件实例
   const instance = new vnode.tag();
+//渲染  
   instance.$vnode = instance.render();
+//挂载  
   mountEl(instance.$vnode, container);
 }
 //html vnode

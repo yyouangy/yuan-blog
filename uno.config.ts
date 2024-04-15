@@ -6,9 +6,9 @@ import {
   presetWebFonts,
   transformerVariantGroup,
 } from "unocss";
-import { navLinks, socialLinks } from "./site.config";
+import { navLinks } from "./site.config";
 
-const compoundLinks = [...navLinks, ...socialLinks];
+const compoundLinks = [...navLinks];
 const safeNavIcon = compoundLinks.map((link) => link.icon);
 
 export default defineConfig({
@@ -40,19 +40,19 @@ export default defineConfig({
       provider: "bunny",
       fonts: {
         // these will extend the default theme
-        sans: 'Roboto',
-        mono: ['Fira Code', 'Fira Mono:400,700'],
+        sans: "Roboto",
+        mono: ["Fira Code", "Fira Mono:400,700"],
         // custom ones
-        lobster: 'Lobster',
+        lobster: "Lobster",
         lato: [
           {
-            name: 'Lato',
-            weights: ['400', '700'],
+            name: "Lato",
+            weights: ["400", "700"],
             italic: true,
           },
           {
-            name: 'sans-serif',
-            provider: 'none',
+            name: "sans-serif",
+            provider: "none",
           },
         ],
       },

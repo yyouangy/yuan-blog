@@ -1,5 +1,5 @@
 ---
-date: 2023-11-12 19:42:34
+date: 2023-11-12
 url:
 aliases:
 title: 响应式原理
@@ -45,13 +45,16 @@ function effectFn() {
 
 如果我们能拦截一个对象的读取和设置操作，事情就变得简单了，
 当 `读取字段 obj.text` 时，我们可以把副作用函数 effect 存储到一个“桶”里：
-> <img  src="/_nuxt/img/get.png"/>
+
+<img  src="/_nuxt/img/notes/get.png"/>
 
 接着，当 `设置 obj.text` 时，再把副作用函数 effect 从“桶”里
-取出并执行即可 
-> <img  src="/_nuxt/img/set.png"/>
+取出并执行即可
 
-在Es2015之前，我们通过Object.defineProperty来拦截对象属性的读取和设置，这也是Vue2采用的api，而Vue3当中，我们使用代理对象`Proxy`来实现
+<img  src="/_nuxt/img/notes/set.png"/>
+
+在Es2015之前，我们通过Object.defineProperty来拦截对象属性的读取和设置，这也是Vue2采用的api，而Vue3当中，我们使用代理对象 `Proxy`来实现
+
 ```js
 // 存储副作用函数的桶
 const bucket = new Set()
@@ -78,6 +81,7 @@ return true
 }
 })
 ```
+
 ```js
 // 副作用函数
 function effect() {
@@ -90,11 +94,15 @@ setTimeout(() => {
 obj.text = 'hello vue3'
 }, 1000)
 ```
+
 上文的实现存在一些缺陷如：
+
 * 通过名称effect获取副作用函数不合理，我们希望自己定义副作用函数名，或者传入匿名函数，这种硬编码机制需要优化
 
 ## 完备的响应式系统
+
 为了解决副作用函数硬编码问题，我们需要提供一个用来注册副作用函数的机制
+
 ```js
 //定义一个全局变量存储已注册的副作用函数（当前激活的副作用函数）
 let activeEffect;
@@ -106,14 +114,17 @@ function registerEffectFn(fn) {
   fn();
 }
 ```
+
 我们可以按照如下所示的方式使用 effect 函数
+
 ```js
 registerEffectFn(function effect() {
   document.body.innerText = obj.date;
 });
 ```
-但如果我们再对这个系统稍加测试，例如在响应式数据 obj 上设
-置一个不存在的属性时：
+
+但如果我们再对这个系统稍加测试，例如在响应式数据 obj 上设置一个不存在的属性时：
+
 ```js
 registerEffectFn(function effect() {
   console.log("effect run");//打印两次
@@ -125,31 +136,37 @@ setTimeout(() => {
 obj.notExist = 'hello vue3'
 }, 1000)
 ```
+
 匿名副作用函数内部读取了字段 obj.text 的值，于是匿名副作用函数与字段 obj.text 之间会建立响应联系。接着，我们开启了一个定时器，一秒钟后为对象 obj 添加新的 notExist 属性。我们知道，在匿名副作用函数内并没有读取 obj.notExist 属性的值，所以理论上，字段 obj.notExist 并没有与副作用建立响应联系，因此，定时器内语句的执行不应该触发匿名副作用函数重新执行。但如果我们执行上述这段代码就会发现，定时器到时后，匿名副作用函数却重新执行了，这是不正确的。为了解决这个问题，我们需要重新设计“桶”的数据结构
 
-那应该设计怎样的数据结构呢？在回答这个问题之前，我们需要
-先仔细观察下面的代码：
+那应该设计怎样的数据结构呢？在回答这个问题之前，我们需要先仔细观察下面的代码：
+
 ```js
 registerEffectFn(function effect() {
   document.body.innerText = obj.date;
 });
 ```
+
 在这段代码中存在三个角色：
+
 * 被操作（读取）的代理对象 obj；
 * 被操作（读取）的字段名 date
 * 使用 registerEffectFn 函数注册的副作用函数 effect
 
 如果用 target 来表示一个代理对象所代理的原始对象，用 key来表示被操作的字段名，用 effect 来表示被注册的副作用函数，那么可以为这三个角色建立如下关系：
+
 ```js
  target
    └── key
         └── effect
-```        
+```
 
 我们可以使用如下图的数据结构：
-> <img src="/_nuxt/img/weakmap.png"/>
+
+<img src="/_nuxt/img/notes/weakmap.png"/>
 
 #### 完整代码
+
 ```js
 //定义一个全局变量存储已注册的副作用函数（当前激活的副作用函数）
 let activeEffect;
@@ -218,5 +235,7 @@ setTimeout(() => {
   obj.date = "20240226";
 }, 1000);
 ```
+
 #### 使用WeakMap存储副作用函数的原因
+
 WeakMap对key是弱引用，不影响垃圾回收器的工作。一旦key被垃圾回收器回收，那么对应的键和值就访问不到了。所以WeakMap一般用来存储那些只有当key所引用的对象存在(没有被回收)才有价值的数据，例如该场景，当target对象不存在任何引用，即用户不再需要它，垃圾回收器会回收它，而如果用Map代替WeakMap，即使target对象不存在任何引用，由于Map是强引用，target也不会被回收，可能导致内存溢出
