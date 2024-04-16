@@ -39,18 +39,18 @@ export const navLinks = [
 ];
 
 export const projectList = [
-  {
-    name: "JavaScript",
-    floder: "javascript",
-    content: [
-      {
-        name: "JavaScript基础",
-      },
-      {
-        name: "JavaScript高级",
-      },
-    ],
-  },
+  // {
+  //   name: "JavaScript",
+  //   floder: "javascript",
+  //   content: [
+  //     {
+  //       name: "JavaScript基础",
+  //     },
+  //     {
+  //       name: "JavaScript高级",
+  //     },
+  //   ],
+  // },
   {
     name: "TypeScript",
     floder: "ts",

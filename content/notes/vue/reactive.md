@@ -46,12 +46,12 @@ function effectFn() {
 如果我们能拦截一个对象的读取和设置操作，事情就变得简单了，
 当 `读取字段 obj.text` 时，我们可以把副作用函数 effect 存储到一个“桶”里：
 
-<img  src="/_nuxt/img/notes/get.png"/>
+<img  src="/img/notes/get.png"/>
 
 接着，当 `设置 obj.text` 时，再把副作用函数 effect 从“桶”里
 取出并执行即可
 
-<img  src="/_nuxt/img/notes/set.png"/>
+<img  src="/img/notes/set.png"/>
 
 在Es2015之前，我们通过Object.defineProperty来拦截对象属性的读取和设置，这也是Vue2采用的api，而Vue3当中，我们使用代理对象 `Proxy`来实现
 
@@ -163,7 +163,7 @@ registerEffectFn(function effect() {
 
 我们可以使用如下图的数据结构：
 
-<img src="/_nuxt/img/notes/weakmap.png"/>
+<img src="/img/notes/weakmap.png"/>
 
 #### 完整代码
 

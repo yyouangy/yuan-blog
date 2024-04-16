@@ -6,7 +6,7 @@ export default defineNuxtConfig({
     "@unocss/nuxt",
     "@vueuse/nuxt",
     "@nuxt/content",
-    "@nuxtjs/stylelint-module",
+    // "@nuxtjs/stylelint-module",
   ],
   app: {
     rootId: "nuxt-root",
@@ -31,16 +31,28 @@ export default defineNuxtConfig({
   },
   content: {
     highlight: {
+      // Theme used in all color schemes.
+      // OR
       theme: {
         // Default theme (same as single string)
-        default: "vitesse-light",
+        default: 'catppuccin-latte',
         // Theme used if `html.dark`
-        dark: "vitesse-dark",
+        dark: 'catppuccin-mocha',
         // Theme used if `html.sepia`
-        sepia: "monokai",
-      },
-      preload: ["c", "cpp", "java"],
-    },
+        sepia: 'monokai'
+      }
+    }
+    // highlight: {
+    //   theme: {
+    //     // Default theme (same as single string)
+    //     default: "vitesse-light",
+    //     // Theme used if `html.dark`
+    //     dark: "vitesse-dark",
+    //     // Theme used if `html.sepia`
+    //     sepia: "monokai",
+    //   },
+    //   preload: ["c", "cpp", "java"],
+    // },
   },
   css: [
     "@unocss/reset/tailwind.css",
@@ -49,9 +61,9 @@ export default defineNuxtConfig({
     "@/assets/styles/transition.css",
     "@/assets/styles/markdown.scss",
   ],
-  stylelint: {
-    /* module options */
-    lintOnStart: false,
-  },
+  // stylelint: {
+  //   /* module options */
+  //   lintOnStart: false,
+  // },
  
 });
